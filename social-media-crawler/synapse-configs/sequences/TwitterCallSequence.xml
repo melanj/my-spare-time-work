@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence xmlns="http://ws.apache.org/ns/synapse" name="TwitterCallSequence">
+   <log level="custom">
+      <property xmlns:m2="http://response.service.example.org"
+                xmlns:ns="http://org.apache.synapse/xsd"
+                name="### running task for payload : "
+                expression="//m2:keywords"/>
+   </log>
+   <iterate xmlns:m2="http://response.service.example.org"
+            xmlns:ns="http://org.apache.synapse/xsd"
+            preservePayload="true"
+            attachPath="//m2:keywords"
+            expression="//m2:keywords/m2:keyword">
+      <target>
+         <sequence>
+            <property name="text"
+                      expression="//m2:keywords/m2:keyword/m2:text/text()"
+                      scope="default"
+                      type="STRING"/>
+            <property name="id"
+                      expression="//m2:keywords/m2:keyword/m2:id/text()"
+                      scope="default"
+                      type="STRING"/>
+            <log level="custom">
+               <property name="### running twitter search for" expression="get-property('text')"/>
+            </log>
+            <twitter.init/>
+            <twitter.search configKey="twitter_init">
+               <search>{$ctx:text}</search>
+            </twitter.search>
+            <class name="org.example.mediator.twitter.TweetExtractMediator"/>
+            <log level="full"/>
+         </sequence>
+      </target>
+   </iterate>
+</sequence>

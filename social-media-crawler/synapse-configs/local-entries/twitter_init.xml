@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<localEntry xmlns="http://ws.apache.org/ns/synapse" key="twitter_init">
+   <twitter.init>
+      <consumerKey></consumerKey>
+      <consumerSecret></consumerSecret>
+      <accessToken></accessToken>
+      <accessTokenSecret></accessTokenSecret>
+   </twitter.init>
+</localEntry>

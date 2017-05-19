@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="twitter-connector-proxy"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <log level="full">
+            <property name="INIT" value="##### Call to the Proxy #####"/>
+         </log>
+         <twitter.init/>
+         <twitter.search configKey="twitter_init">
+            <search>java</search>
+         </twitter.search>
+         <class name="org.example.mediator.twitter.TweetExtractMediator"/>
+         <iterate preservePayload="true"
+                  attachPath="//results"
+                  expression="//results/result">
+            <target>
+               <sequence>
+                  <log level="full">
+                     <property name="rr" value="##### iterate #####"/>
+                  </log>
+               </sequence>
+            </target>
+         </iterate>
+         <respond/>
+      </inSequence>
+      <outSequence/>
+      <faultSequence/>
+   </target>
+</proxy>

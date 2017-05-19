@@ -1,0 +1,42 @@
+<data name="JaredoDS">
+   <config id="JaredoDS">
+      <property name="username">root</property>
+      <property name="password">root</property>
+      <property name="url">jdbc:mysql://localhost:3306/IntalegenIS</property>
+      <property name="driverClassName">com.mysql.jdbc.Driver</property>
+   </config>
+   <query id="InsertInfluenceData" returnGeneratedKeys="true" useConfig="JaredoDS">
+      <sql>call sp_ins_Influence_Data(?,?,?,?,?,?,?,?,?,?,?,?)</sql>
+      <result element="SearchKeywords" rowName="Keyword">
+         <element column="SearchKeywordID" name="SearchKeywordID" requiredRoles="admin,Internal/everyone" xsdType="string"/>
+         <element column="KeyWordName" name="KeyWordName" requiredRoles="admin,Internal/everyone" xsdType="string"/>
+      </result>
+      <param name="p_Email" ordinal="1" sqlType="STRING" type="INOUT"/>
+      <param name="p_PasswordHash" ordinal="2" sqlType="STRING"/>
+      <param name="p_SearchTypeID" ordinal="3" sqlType="INTEGER"/>
+      <param name="p_Topic" ordinal="4" sqlType="STRING"/>
+      <param name="p_FrequencyInDays" ordinal="5" sqlType="INTEGER"/>
+      <param name="p_Occurrence" ordinal="6" sqlType="STRING"/>
+      <param name="p_StartDate" ordinal="7" sqlType="DATE"/>
+      <param name="p_EndDate" ordinal="8" sqlType="DATE"/>
+      <param name="p_CreatedDate" ordinal="9" sqlType="DATE"/>
+      <param name="p_LastModifiedBy" ordinal="10" sqlType="STRING"/>
+      <param name="p_KeyWords" ordinal="11" sqlType="STRING"/>
+      <param name="UserID" ordinal="12" sqlType="INTEGER" type="OUT"/>
+   </query>
+   <operation name="InsertInfluenceDataOperation">
+      <call-query href="InsertInfluenceData">
+         <with-param name="p_Email" query-param="p_Email"/>
+         <with-param name="p_PasswordHash" query-param="p_PasswordHash"/>
+         <with-param name="p_SearchTypeID" query-param="p_SearchTypeID"/>
+         <with-param name="p_Topic" query-param="p_Topic"/>
+         <with-param name="p_FrequencyInDays" query-param="p_FrequencyInDays"/>
+         <with-param name="p_Occurrence" query-param="p_Occurrence"/>
+         <with-param name="p_StartDate" query-param="p_StartDate"/>
+         <with-param name="p_EndDate" query-param="p_EndDate"/>
+         <with-param name="p_CreatedDate" query-param="p_CreatedDate"/>
+         <with-param name="p_LastModifiedBy" query-param="p_LastModifiedBy"/>
+         <with-param name="p_KeyWords" query-param="p_KeyWords"/>
+      </call-query>
+   </operation>
+</data>

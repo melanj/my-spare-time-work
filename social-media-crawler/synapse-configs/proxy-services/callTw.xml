@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="callTw"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <iterate xmlns:m2="http://response.service.example.org"
+                  preservePayload="true"
+                  attachPath="//m2:keywords"
+                  expression="//m2:keywords/m2:keyword">
+            <target>
+               <sequence>
+                  <property name="text"
+                            expression="//m2:keywords/m2:keyword/m2:text/text()"
+                            scope="default"
+                            type="STRING"/>
+                  <property name="id"
+                            expression="//m2:keywords/m2:keyword/m2:id/text()"
+                            scope="default"
+                            type="STRING"/>
+                  <log level="custom">
+                     <property name="text" expression="get-property('text')"/>
+                     <property name="id" expression="get-property('id')"/>
+                  </log>
+                  <twitter.init/>
+                  <twitter.search configKey="twitter_init">
+                     <search>{$ctx:text}</search>
+                  </twitter.search>
+                  <class name="org.example.mediator.twitter.TweetExtractMediator"/>
+                  <log level="full"/>
+               </sequence>
+            </target>
+         </iterate>
+         <respond/>
+      </inSequence>
+   </target>
+</proxy>

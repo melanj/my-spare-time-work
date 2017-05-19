@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="Itr"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <log level="full"/>
+         <property name="ID"
+                   expression="get-property('MessageID')"
+                   scope="default"
+                   type="STRING"/>
+         <enrich>
+            <source type="body" clone="true"/>
+            <target type="property" property="MESSAGE_PAYLOAD"/>
+         </enrich>
+         <enrich>
+            <source type="body" clone="true"/>
+            <target type="property" property="CURR_TRANS_DATA"/>
+         </enrich>
+         <enrich>
+            <source type="inline" clone="true">
+               <p:addVATransaction_batch_req xmlns:p="http://concur.com/data/va/v1"/>
+            </source>
+            <target type="property" property="DATA_BATCH_REQ_PAYLOAD"/>
+         </enrich>
+         <property name="ITERATOR_DATA_BATCH_REQ_PAYLOAD"
+                   expression="get-property('DATA_BATCH_REQ_PAYLOAD')"
+                   scope="operation"
+                   type="OM"/>
+         <iterate xmlns:ns="http://org.apache.synapse/xsd"
+                  continueParent="true"
+                  expression="//bookstore/book"
+                  sequential="true">
+            <target>
+               <sequence>
+                  <log level="custom">
+                     <property name="input-ite*****"
+                               expression="get-property('DATA_BATCH_REQ_PAYLOAD')"/>
+                  </log>
+                  <log level="custom">
+                     <property name="TID" expression="$ctx:ID"/>
+                     <property name="MessageFlow"
+                               value=" ------------------ 0.1 before iterator ------------------ "/>
+                  </log>
+                  <payloadFactory media-type="xml">
+                     <format>
+                        <p:addVATransaction xmlns:p="http://concur.com/data/va/v1">
+                           <p:AUTH_ID>$1</p:AUTH_ID>
+                           <p:REQ_AMT>$2</p:REQ_AMT>
+                        </p:addVATransaction>
+                     </format>
+                     <args>
+                        <arg evaluator="xml" expression="//title/text()"/>
+                        <arg evaluator="xml" expression="//price/text()"/>
+                     </args>
+                  </payloadFactory>
+                  <enrich>
+                     <source type="body" clone="true"/>
+                     <target type="property" property="DATA_REQ_PAYLOAD"/>
+                  </enrich>
+                  <log level="custom">
+                     <property name="***********DATA_REQ_PAYLOAD************"
+                               expression="get-property('operation','ITERATOR_DATA_BATCH_REQ_PAYLOAD')"/>
+                  </log>
+                  <property name="DATA_BATCH_REQ_PAYLOAD"
+                            expression="get-property('operation','ITERATOR_DATA_BATCH_REQ_PAYLOAD')"
+                            type="OM"/>
+                  <enrich>
+                     <source type="property" clone="true" property="DATA_BATCH_REQ_PAYLOAD"/>
+                     <target type="body"/>
+                  </enrich>
+                  <log level="full"/>
+                  <enrich>
+                     <source type="property" clone="true" property="DATA_REQ_PAYLOAD"/>
+                     <target xmlns:p="http://concur.com/data/va/v1"
+                             action="child"
+                             xpath="//p:addVATransaction_batch_req"/>
+                  </enrich>
+                  <log level="full"/>
+                  <enrich>
+                     <source type="body" clone="true"/>
+                     <target type="property" property="DATA_BATCH_REQ_PAYLOAD"/>
+                  </enrich>
+                  <property name="ITERATOR_DATA_BATCH_REQ_PAYLOAD"
+                            expression="get-property('DATA_BATCH_REQ_PAYLOAD')"
+                            scope="operation"
+                            type="OM"/>
+                  <log level="full">
+                     <property name="TID" expression="$ctx:ID"/>
+                     <property name="MessageFlow"
+                               value=" ------------------ 0.2 inside iterator ------------------ "/>
+                  </log>
+                  <log level="custom">
+                     <property name="symbol" expression="get-property('DATA_BATCH_REQ_PAYLOAD')"/>
+                  </log>
+                  <drop/>
+               </sequence>
+            </target>
+         </iterate>
+         <property xmlns:ns="http://org.apache.synapse/xsd"
+                   name="NEW_DATA_BATCH_REQ_PAYLOAD"
+                   expression="get-property('operation','ITERATOR_DATA_BATCH_REQ_PAYLOAD')"
+                   type="OM"/>
+         <enrich>
+            <source type="property" clone="true" property="NEW_DATA_BATCH_REQ_PAYLOAD"/>
+            <target type="body"/>
+         </enrich>
+         <respond/>
+      </inSequence>
+   </target>
+</proxy>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy xmlns="http://ws.apache.org/ns/synapse"
+       name="InfluenceDataService"
+       transports="https http"
+       startOnLoad="true"
+       trace="disable">
+   <description/>
+   <target>
+      <inSequence>
+         <class name="org.example.mediator.data.influence.InfluenceDataMediator">
+            <property name="jndiName" value="jdbc/InfluenceData"/>
+         </class>
+         <log level="full"/>
+         <respond/>
+      </inSequence>
+   </target>
+   <publishWSDL uri="file:///home/melan/workspace/smc/esb/wsdls/InfluenceDataService.wsdl"/>
+</proxy>

@@ -1,0 +1,44 @@
+<data description="multiple services per each table" enableBatchRequests="false" enableBoxcarring="false" name="Employees_DataService" serviceNamespace="http://ws.wso2.org/dataservice" serviceStatus="active">
+   <config id="default">
+      <property name="carbon_datasource_name">bb</property>
+   </config>
+   <query id="insert_Employees_query" useConfig="default">
+      <sql>INSERT INTO Employees(employeeNumber,lastName,firstName,extension,email,officeCode,reportsTo,jobTitle) VALUES(?,?,?,?,?,?,?,?)</sql>
+      <param name="employeeNumber" ordinal="1" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+      <param name="lastName" ordinal="2" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="firstName" ordinal="3" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="extension" ordinal="4" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="email" ordinal="5" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="officeCode" ordinal="6" paramType="SCALAR" sqlType="STRING" type="IN"/>
+      <param name="reportsTo" ordinal="7" paramType="SCALAR" sqlType="INTEGER" type="IN"/>
+      <param name="jobTitle" ordinal="8" paramType="SCALAR" sqlType="STRING" type="IN"/>
+   </query>
+   <query id="select_all_Employees_query" useConfig="default">
+      <sql>call getEmployee()</sql>
+      <result element="EmployeesCollection" rowName="Employees">
+         <element column="employeeNumber" name="employeeNumber" xsdType="xs:integer"/>
+         <element column="lastName" name="lastName" xsdType="xs:string"/>
+         <element column="firstName" name="firstName" xsdType="xs:string"/>
+         <element column="extension" name="extension" xsdType="xs:string"/>
+         <element column="email" name="email" xsdType="xs:string"/>
+         <element column="officeCode" name="officeCode" xsdType="xs:string"/>
+         <element column="reportsTo" name="reportsTo" xsdType="xs:integer"/>
+         <element column="jobTitle" name="jobTitle" xsdType="xs:string"/>
+      </result>
+   </query>
+   <operation name="select_all_Employees_operation">
+      <call-query href="select_all_Employees_query"/>
+   </operation>
+   <operation name="insert_Employees_operation">
+      <call-query href="insert_Employees_query">
+         <with-param name="extension" query-param="extension"/>
+         <with-param name="lastName" query-param="lastName"/>
+         <with-param name="officeCode" query-param="officeCode"/>
+         <with-param name="email" query-param="email"/>
+         <with-param name="reportsTo" query-param="reportsTo"/>
+         <with-param name="firstName" query-param="firstName"/>
+         <with-param name="employeeNumber" query-param="employeeNumber"/>
+         <with-param name="jobTitle" query-param="jobTitle"/>
+      </call-query>
+   </operation>
+</data>
