@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Class-Path: cxf-rt-frontend-jaxrs-3.0.1.jar cxf-core-3.0.1.jar woodsto
+ x-core-asl-4.4.0.jar stax2-api-3.1.4.jar xmlschema-core-2.1.0.jar jav
+ ax.ws.rs-api-2.0.jar javax.annotation-api-1.2.jar cxf-rt-transports-h
+ ttp-3.0.1.jar jackson-core-asl-1.8.6.jar jackson-mapper-asl-1.8.6.jar
+  jackson-jaxrs-1.8.6.jar spring-web-3.2.6.RELEASE.jar aopalliance-1.0
+ .jar spring-aop-3.2.6.RELEASE.jar spring-beans-3.2.6.RELEASE.jar spri
+ ng-core-3.2.6.RELEASE.jar commons-logging-1.1.1.jar spring-context-3.
+ 2.6.RELEASE.jar spring-expression-3.2.6.RELEASE.jar validation-api-1.
+ 1.0.Final.jar javax.el-api-3.0-b02.jar javax.el-3.0-b01.jar bval-jsr-
+ 1.1.0-alpha-SNAPSHOT.jar bval-core-1.1.0-alpha-SNAPSHOT.jar commons-l
+ ang3-3.3.2.jar commons-beanutils-core-1.8.3.jar junit-4.8.2.jar jaxb-
+ api-2.2.6.jar jaxb-impl-2.2.6.jar
+

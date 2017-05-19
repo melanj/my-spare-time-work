@@ -1,0 +1,1 @@
+gcc -I/usr/include/python2.6 py.c -o py -lpython2.6
