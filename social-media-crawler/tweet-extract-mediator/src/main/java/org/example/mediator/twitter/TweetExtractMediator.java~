@@ -1,0 +1,110 @@
+/**
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *   * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
+
+package org.example.mediator.twitter;
+
+
+import java.util.Iterator;
+
+import javax.xml.namespace.QName;
+
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.synapse.MessageContext; 
+import org.apache.synapse.mediators.AbstractMediator;
+
+/**
+ * 
+ *
+ */
+public class TweetExtractMediator extends AbstractMediator { 
+	
+	private static final Log log = LogFactory.getLog(TweetExtractMediator.class);
+	
+	private MessageContext mc;
+
+	public boolean mediate(MessageContext mc) { 
+		this.mc = mc;
+		SOAPBody body = this.mc.getEnvelope().getBody();
+        OMElement firstChild = body.getFirstElement();
+        if (firstChild != null) {
+            if("jsonObject".equals(firstChild.getLocalName())){
+            	Iterator<?> statuses = firstChild.getChildrenWithLocalName("statuses");
+            	if(statuses.hasNext()){
+            		processStatuses(statuses);	
+            	} else{
+            		log.warn("skipping... no 'statuses' found!");
+                	return false;
+            	}
+            } else{
+            	log.warn("skipping... no JSON payload found!");
+            	return false;
+            }
+        } else {
+        	log.warn("skipping... no content in body!");
+        	return false;
+        }
+		
+		return true;
+	}
+
+	private void processStatuses(Iterator<?> statuses) {
+		OMFactory fac = OMAbstractFactory.getOMFactory();
+		OMElement results = fac.createOMElement(new QName("results"));
+		while(statuses.hasNext()){
+			OMElement next = (OMElement) statuses.next();
+			OMElement result = fac.createOMElement(new QName("result"));
+			OMElement createdAt = next.getFirstChildWithName(new QName("created_at"));
+			
+			// FIXME : create payload for target data service ()
+			
+			result.addChild(createdAt);
+			/*metadata->result_type
+			created_at
+			id_str
+			text
+			source
+			user {id_str,name,screen_name,location,followers_count,friends_count,time_zone}
+			coordinates
+			place
+			retweet_count
+			favorite_count
+			entities{hashtags,user_mentions}
+			lang
+			search_metadata{count}*/
+			results.addChild(result);
+		}
+		setPayloadXML(results);
+	}
+	
+	private void setPayloadXML(OMElement payload) {
+	        SOAPBody body = mc.getEnvelope().getBody();
+	        OMElement firstChild = body.getFirstElement();
+	        if (firstChild == null) {
+	            body.addChild(payload);
+	        } else {
+	            firstChild.insertSiblingAfter(payload);
+	            firstChild.detach();
+	        }
+	    }
+}
