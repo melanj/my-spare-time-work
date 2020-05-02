@@ -1,0 +1,23 @@
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:h="http://java.sun.com/jsf/html"
+       xmlns:rich="http://richfaces.org/rich"
+       xmlns:f="http://java.sun.com/jsf/core">
+    <head><title></title></head>
+
+    <body>
+    <rich:panel>
+        <f:facet name="header">Insert new contact</f:facet>
+        <form action="NewAction.action" method="POST">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="f1" value="Parameter1"/> <h:inputText label="f1" id="p1" required="true" value="7000"/>
+                <h:outputLabel for="f2" value="Parameter2"/> <h:inputText label="f2" id="p2" required="true" value="7000"/>
+                <h:outputLabel for="f3" value="Parameter3"/> <h:inputText label="f3" id="p3" required="true" value="7000"/>
+                <h:outputLabel for="f4" value="Parameter4"/> <h:inputText label="f4" id="p4" required="true" value="7000"/>
+                <h:outputLabel for="f5" value="Parameter5"/> <h:inputText label="f5" id="p5" required="true" value="7000"/>
+                <h:commandButton value="Save"/>
+            </h:panelGrid>
+        </form>
+    </rich:panel>
+
+</body>
+</html>

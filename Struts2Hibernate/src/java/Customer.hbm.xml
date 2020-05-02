@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class catalog="j2ee" name="Customer" table="customer">
+    <id name="customerId" type="java.lang.Long">
+      <column name="CUSTOMER_ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="name" type="string">
+      <column length="45" name="NAME" not-null="true"/>
+    </property>
+    <property name="address" type="string">
+      <column name="ADDRESS" not-null="true"/>
+    </property>
+    <property name="createdDate" type="timestamp">
+      <column length="19" name="CREATED_DATE" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

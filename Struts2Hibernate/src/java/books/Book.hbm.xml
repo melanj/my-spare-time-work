@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 19, 2010 9:54:40 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="j2ee" name="books.Book" table="book">
+    <id name="id" type="java.lang.Integer">
+      <column name="ID"/>
+      <generator class="identity"/>
+    </id>
+    <property name="title" type="string">
+      <column name="Title"/>
+    </property>
+    <property name="year" type="string">
+      <column name="Year"/>
+    </property>
+    <property name="author" type="string">
+      <column name="Author"/>
+    </property>
+    <property name="isbn10" type="string">
+      <column name="ISBN10"/>
+    </property>
+    <property name="isbn13" type="string">
+      <column name="ISBN13"/>
+    </property>
+    <property name="publisher" type="string">
+      <column name="Publisher"/>
+    </property>
+    <property name="cat1" type="string">
+      <column name="cat1"/>
+    </property>
+    <property name="cat2" type="string">
+      <column name="cat2"/>
+    </property>
+    <property name="addedon" type="timestamp">
+      <column length="19" name="addedon"/>
+    </property>
+    <property name="filename" type="string">
+      <column name="filename"/>
+    </property>
+    <property name="filetype" type="string">
+      <column name="filetype"/>
+    </property>
+    <property name="isSourceCodeDownloaded" type="string">
+      <column name="isSourceCodeDownloaded"/>
+    </property>
+  </class>
+</hibernate-mapping>

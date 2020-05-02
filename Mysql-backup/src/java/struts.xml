@@ -1,0 +1,66 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+   <constant name="struts.devMode" value="true"/>
+   <constant name="struts.action.extension" value=""/>
+   <constant name="struts.enable.SlashesInActionNames" value="true"/>
+ <!--  <constant name="struts.mapper.alwaysSelectFullNamespace" value="false" />-->
+    <package name="default" extends="struts-default">
+        <action name="">
+        <result name="success">index.jsp</result> 
+        </action>
+        <action name="backup" class="com.activesplash.util.mysql.backup.BackupAction">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait"/>
+            <result name="wait">wait.jsp</result>
+            <result name="success">complete.jsp</result>
+            <result name="fail">fail.jsp</result>
+        </action>
+<!--   <action name="download" class="com.activesplash.util.mysql.backup.DownloadAction">
+	<result name="success" type="stream">
+	  <param name="contentType">application/octet-stream</param>
+	  <param name="inputName">fileInputStream</param>
+	  <param name="contentDisposition">attachment;filename="backup.gz"</param>
+	  <param name="bufferSize">1024</param>
+	</result>
+   </action>-->
+<!--     <action name="download/*" method="{1}" class="com.activesplash.util.mysql.backup.DownloadAction">
+	<result name="success" type="stream">
+	  <param name="contentType">application/octet-stream</param>
+	  <param name="inputName">fileInputStream</param>
+	  <param name="contentDisposition">attachment;filename="backup.{1}"</param>
+	  <param name="bufferSize">1024</param>
+          <param name="type">{1}</param>
+	</result>
+   </action>-->
+     <action name="download/*" class="com.activesplash.util.mysql.backup.DownloadAction">
+	<param name="type">{1}</param>
+        <result name="success" type="stream">
+	  <param name="contentType">application/octet-stream</param>
+	  <param name="inputName">fileInputStream</param>
+	  <param name="contentDisposition">attachment;filename="backup.{1}"</param>
+	  <param name="bufferSize">1024</param>
+	</result>
+   </action>
+        <action name="image/*" class="com.activesplash.util.mysql.backup.ImageAction">
+	<param name="fileName">{1}</param>
+        <result name="success" type="stream">
+	  <param name="contentType">image/jpeg</param>
+	  <param name="inputName">fileInputStream</param>
+	  <param name="contentDisposition">inline;filename="{1}"</param>
+	  <param name="bufferSize">1024</param>
+	</result>
+   </action>
+      <action name="thumbnail/*" class="com.activesplash.util.mysql.backup.ThumbnailAction">
+	<param name="fileName">{1}</param>
+        <result name="success" type="stream">
+	  <param name="contentType">image/jpeg</param>
+	  <param name="inputName">fileInputStream</param>
+	  <param name="contentDisposition">inline;filename="{1}"</param>
+	  <param name="bufferSize">1024</param>
+	</result>
+   </action>
+    </package>
+</struts>
