@@ -8,7 +8,7 @@
     <name>Simple CXF JAX-RS webapp service using spring configuration</name>
     <description>Simple CXF JAX-RS webapp service using spring configuration</description>
     <properties>
-        <jackson.version>1.8.6</jackson.version>
+        <jackson.version>1.9.14-TALEND</jackson.version>
     </properties>
     <dependencies>
         <dependency>
